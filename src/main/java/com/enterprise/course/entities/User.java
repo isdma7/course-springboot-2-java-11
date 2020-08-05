@@ -2,13 +2,21 @@ package com.enterprise.course.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+//para podermos especificar as entidades para o JPA
+@Entity
 public class User implements Serializable{//Serializable transforma os dados em bytes para transferencias dos dados na rede, transferencia para ficheiros etc.
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;// serializable tem numero de serie padrao
 
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //Autoincrementar
 	private Long id;
 	private String name;
 	private String email;
