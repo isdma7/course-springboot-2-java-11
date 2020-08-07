@@ -1,14 +1,19 @@
 package com.enterprise.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 //para podermos especificar as entidades para o JPA
 @Entity
+@Table(name= "tb_user")
 public class User implements Serializable{//Serializable transforma os dados em bytes para transferencias dos dados na rede, transferencia para ficheiros etc.
 	/**
 	 * 
@@ -22,6 +27,10 @@ public class User implements Serializable{//Serializable transforma os dados em 
 	private String email;
 	private String phone;
 	private String password;
+	
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>(); // associação, cada user pode ter varios Orders e temos tambem de instanciar
+	//para coleções so criamos os getters
 	
 	public User() { //Quando se usa framework este construtor é obrigatorio
 		
@@ -77,6 +86,10 @@ public class User implements Serializable{//Serializable transforma os dados em 
 	}
 
 	
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
 	//Neste caso so comparamos o objeto pelo ID mas podemos escolher o resto dos atributos
 	@Override
 	public int hashCode() {
@@ -102,6 +115,8 @@ public class User implements Serializable{//Serializable transforma os dados em 
 			return false;
 		return true;
 	}
+
+	
 	
 	
 	
