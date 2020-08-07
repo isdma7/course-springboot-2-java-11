@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 //atribuimos nome à tabela pk senao pode entrar em conflito com nome SQL reservados como ORDER
 @Entity
 @Table(name = "tb_order")
@@ -19,6 +21,8 @@ public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;  //usamos o instant que é melhor que a Date
 	
 	//para o JPA perceber a associação de muitos para 1 que temos nesta classe

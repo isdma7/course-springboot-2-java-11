@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //para podermos especificar as entidades para o JPA
 @Entity
 @Table(name= "tb_user")
@@ -28,6 +30,9 @@ public class User implements Serializable{//Serializable transforma os dados em 
 	private String phone;
 	private String password;
 	
+	//Se nao meter jsonignore a biblioteca jackson faz um loop infinito de criação de um para muitos
+	//assim tras com o pedido o cliente correspondente ao pedido das orders
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>(); // associação, cada user pode ter varios Orders e temos tambem de instanciar
 	//para coleções so criamos os getters
