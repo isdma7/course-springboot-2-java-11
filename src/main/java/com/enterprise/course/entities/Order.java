@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.enterprise.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 //atribuimos nome à tabela pk senao pode entrar em conflito com nome SQL reservados como ORDER
@@ -25,6 +26,9 @@ public class Order implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;  //usamos o instant que é melhor que a Date
 	
+	
+	private Integer orderStatus; //obriga lo a ser inteiro mas abaixo temos de converter para dar
+	
 	//para o JPA perceber a associação de muitos para 1 que temos nesta classe
 	//e dizemos tambem a chave estrangeira que queremos
 	@JoinColumn(name = "client_id")
@@ -35,10 +39,11 @@ public class Order implements Serializable{
 		
 	}
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus); //como esta implementado pelo set é so chamar
 		this.client = client;
 	}
 
@@ -56,6 +61,17 @@ public class Order implements Serializable{
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+	
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	public User getClient() {
