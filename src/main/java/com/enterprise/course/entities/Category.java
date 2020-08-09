@@ -1,12 +1,15 @@
 package com.enterprise.course.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -19,10 +22,16 @@ public class Category implements Serializable{//Serializable transforma os dados
 	private Long id;
 	private String name;
 	
+	//@Transient para nao ser interpretado para ja pelo JPA
+	@Transient 
+	private Set<Product> products = new HashSet<>();
+	
+	
 	public Category() {
 		
 	}
 
+	//as coleções nao se colocam em contrutores porque ela já é instanciada em cima
 	public Category(Long id, String name) {
 		super();
 		this.id = id;
@@ -43,6 +52,10 @@ public class Category implements Serializable{//Serializable transforma os dados
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Set<Product> getProducts() {
+		return products;
 	}
 
 	@Override
@@ -69,6 +82,8 @@ public class Category implements Serializable{//Serializable transforma os dados
 			return false;
 		return true;
 	}
+
+	
 	
 	
 
