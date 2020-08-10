@@ -9,9 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_product")
@@ -32,13 +36,24 @@ public class Product implements Serializable{
 	private String imgURL;
 	
 	
-	@Transient
+	//@Transient
 	//neste caso usamos Set em vez de List porque o Set evita que o mesmo produto tenha + que 1 categoria
+	
+	
+	
+	@ManyToMany
+	@JoinTable(name= "tb_product_category", 
+	joinColumns = @JoinColumn(name="product_id"),
+	inverseJoinColumns = @JoinColumn(name="category_id"))
 	private Set<Category> categories = new HashSet<>();//coleçoes tem de ser instanciadas porque podem começar vazias mas não nulas
 	//usamos o Set que é uma interface e depois uma classe que a implementa para a
 	//poder instaciar que é o Hashset, com o set como é uma interface não poderiamos fazer new Set por isso mesmo
 	//o mesmo acontece com List que depois fazemos new Arraylist<>()
 	
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
 	public Product(){
 		
 	}

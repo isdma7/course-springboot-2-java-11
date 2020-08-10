@@ -8,9 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_category")
@@ -22,8 +23,12 @@ public class Category implements Serializable{//Serializable transforma os dados
 	private Long id;
 	private String name;
 	
-	//@Transient para nao ser interpretado para ja pelo JPA
-	@Transient 
+	//@Transient para nao ser interpretado para ja pelo JPA caso ainda nao tenha definido a associação como manytoone etc
+	
+	//Json para nao entrar em loop infinito, metemos aqui ou em product, conforme pretendermos no get que busque as cats dos produtcs sempre que charmarmos a tabela products ou vise-versa
+		@JsonIgnore
+	//Podia ter feito aqui o que fiz em product e este lá mas com products é indiferente
+	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 	
 	

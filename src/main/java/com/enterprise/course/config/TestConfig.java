@@ -20,6 +20,7 @@ import com.enterprise.course.repositories.OrderRepository;
 import com.enterprise.course.repositories.ProductRepository;
 import com.enterprise.course.repositories.UserRepository;
 
+
 //Usamos esta class unicamente para testes e confs, por isso mesmo usamos tambem uma 
 //interface de testes em application-test.properties
 @Configuration
@@ -75,6 +76,24 @@ public class TestConfig implements CommandLineRunner {
 		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 		
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		
+		
+		//depois de criadas as cats e products, vamos associar algumas umas ás outras
+		//chamo a coleção de categorias deste produto e adiciono a ela a categoria que pretendo
+		p1.getCategories().add(cat2); //associação entre objetos
+		
+		p2.getCategories().add(cat1);
+		p2.getCategories().add(cat3);
+		
+		p3.getCategories().add(cat3);
+		
+		p4.getCategories().add(cat3);
+		
+		p5.getCategories().add(cat2);
+		
+		//depois basta salvar de novo em BD
+		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		
 
 	}
 
