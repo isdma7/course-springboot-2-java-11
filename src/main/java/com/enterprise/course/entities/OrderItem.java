@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.enterprise.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_order_item")
@@ -15,7 +16,7 @@ public class OrderItem implements Serializable{
 	
 	//neste caso como é um id composto fica assim
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK(); //temos de inicializar
 	
 	private Integer quantity;
 	private Double price;
@@ -33,6 +34,8 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 
+	//dava loop, porque é uma associação de 1 para muitos mas aqui como não temos como no user o set de orders, serve fazermos isso no get do order
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
