@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -49,6 +50,11 @@ public class Product implements Serializable{
 	//usamos o Set que é uma interface e depois uma classe que a implementa para a
 	//poder instaciar que é o Hashset, com o set como é uma interface não poderiamos fazer new Set por isso mesmo
 	//o mesmo acontece com List que depois fazemos new Arraylist<>()
+	
+	
+	//usamos o set porque eu nao quero repetições do mesmo item
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
@@ -109,6 +115,17 @@ public class Product implements Serializable{
 	
 	public Set<Category> getCategories() {
 		return categories;
+	}
+	
+	@JsonIgnore
+	//Fazer um get mas nao do orderitem, quero mesmo os orders de cada product
+	public Set<Order> getOrders(){
+		
+		Set<Order> set = new HashSet<>();
+		for(OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
 	}
 	
 
