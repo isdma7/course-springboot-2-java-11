@@ -11,6 +11,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name= "tb_payment")
 public class Payment implements Serializable{//Serializable transforma os dados em bytes para transferencias dos dados na rede, transferencia para ficheiros etc.
@@ -27,6 +29,8 @@ public class Payment implements Serializable{//Serializable transforma os dados 
 	
 	//associação 1 para 1
 	//Isto é como se coloca na classe dependente
+	//Jsonignore tem de ser colocado nesta ou na order, preferimos nesta para na order mostrar os pagamentos de cada uma
+	@JsonIgnore
 	@OneToOne
 	@MapsId
 	private Order order;
