@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.enterprise.course.entities.User;
@@ -37,6 +38,20 @@ public class UserService {
 	
 	public void delete(Long id) {
 		repository.deleteById(id);
+
+	}
+	
+	public User update(Long id, User obj) {
+		User entity = repository.getOne(id); // em vez de fazermos o get acima que vai ao bd, preparamos um objeto monitorado pelo JPA para mechermos e depois sim efetuamos uma operação com o bd
+		updateData(entity, obj); //criamos uma função para atualizar dados do meu entity com base no que chega do obj
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());	
 	}
 	
 }
