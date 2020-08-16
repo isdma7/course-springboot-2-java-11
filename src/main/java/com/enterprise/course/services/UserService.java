@@ -35,4 +35,8 @@ public class UserService {
 		return repository.save(obj); //metodo que tenho no repository para salvar e que por defeito ja retorna o objeto salvo
 	}
 	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
 }
