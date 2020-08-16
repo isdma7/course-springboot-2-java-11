@@ -30,4 +30,9 @@ public class UserService {
 		return obj.get();
 	}
 	
+	public User insert(User obj) {
+		
+		return repository.save(obj); //metodo que tenho no repository para salvar e que por defeito ja retorna o objeto salvo
+	}
+	
 }
