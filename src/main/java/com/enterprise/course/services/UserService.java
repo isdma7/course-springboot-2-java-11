@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.enterprise.course.entities.User;
 import com.enterprise.course.repositories.UserRepository;
+import com.enterprise.course.services.exceptions.ResourceNotFoundException;
 
 
 //registrar como componente do spring e assim depois ja podemos no Userresources criar a dependencia spring para o services
@@ -28,7 +29,10 @@ public class UserService {
 	
 	public User findById(Long id){
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		//return obj.get();
+		
+		//tenta fazer o get e se nao der faz uma excepção 
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));//expressao lambeda para chamar a nossa classe
 	}
 	
 	public User insert(User obj) {
