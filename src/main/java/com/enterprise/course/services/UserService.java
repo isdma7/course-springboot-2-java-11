@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.enterprise.course.entities.User;
 import com.enterprise.course.repositories.UserRepository;
+import com.enterprise.course.services.exceptions.DatabaseException;
 import com.enterprise.course.services.exceptions.ResourceNotFoundException;
 
 
@@ -41,7 +44,18 @@ public class UserService {
 	}
 	
 	public void delete(Long id) {
+		try {
 		repository.deleteById(id);
+		}
+		//catch (RuntimeException e) {//excepção  mais generica podemos faze-la para depois no console apanhar a mais especifica do erro que acontece e fazer para ela
+				//e.printStackTrace();
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id); //capturo e lanço a minha excepção de serviço
+		}
+		catch (DataIntegrityViolationException e) {//apanhamos a de cima para os ids que nao existem e agora apamnhamos esta para os id que tem associações ativas nao podendo assim ser apagados, agora temos de cirar neste caso um classe para esta excepção especifica
+			
+			throw new DatabaseException(e.getMessage()); //lanço nova excepção e passo-lhe a mensagem que veio da expeção tratada pelo spring
+		}
 
 	}
 	
