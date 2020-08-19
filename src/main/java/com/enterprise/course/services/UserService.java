@@ -60,9 +60,16 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		User entity = repository.getOne(id); // em vez de fazermos o get acima que vai ao bd, preparamos um objeto monitorado pelo JPA para mechermos e depois sim efetuamos uma operação com o bd
-		updateData(entity, obj); //criamos uma função para atualizar dados do meu entity com base no que chega do obj
-		return repository.save(entity);
+		try {
+			
+			User entity = repository.getOne(id); // em vez de fazermos o get acima que vai ao bd, preparamos um objeto monitorado pelo JPA para mechermos e depois sim efetuamos uma operação com o bd
+			updateData(entity, obj); //criamos uma função para atualizar dados do meu entity com base no que chega do obj
+			return repository.save(entity);
+		
+		}catch(RuntimeException e){
+			e.printStackTrace();
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
